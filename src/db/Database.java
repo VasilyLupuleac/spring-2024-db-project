@@ -37,8 +37,29 @@ public class Database {
         return false;
     }
     public void insert(Table table, DataEntry[] entries, String fieldOrder) {
-        // TODO
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO ");
+        query.append("?(?)");
+        query.append(" VALUES (");
+        int numEntries = entries.length;
+        String[] placeholders = new String[numEntries];
+        Arrays.fill(placeholders, "? ");
+        query.append(String.join(", ", placeholders));
+        query.append(");");
+        try {
+            PreparedStatement preparedStatement =
+                    dbConnection.prepareStatement(query.toString());
+            preparedStatement.setString(1, table.getName());
+            preparedStatement.setString(2, fieldOrder);
+            for (int i = 0; i < numEntries; i++)
+                preparedStatement.setString(i + 3, entries[i].toSQL());
+            ResultSet resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            //TODO handle
+            System.out.println("Couldn't insert into " + table.getName());
+        }
     }
+
     public DataEntry[] select(Table table, String query) {
         return null;
     }
