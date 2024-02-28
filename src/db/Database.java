@@ -63,9 +63,7 @@ public class Database {
     public DataEntry[] select(Table table, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
         query.append("select ? from ?");
-        if (!condition.isEmpty())
-            query.append("where ?");
-        query.append(';');
+        query.append(condition.isEmpty() ? ";" : "where ?;");
         try {
             PreparedStatement preparedStatement =
                     dbConnection.prepareStatement(query.toString());
@@ -77,8 +75,24 @@ public class Database {
             return parser.parseAll(resultSet);
         } catch (SQLException e) {
             //TODO handle
-            System.out.println("Couldn't insert into " + table.getName());
+            System.out.println("Couldn't get the data from " + table.getName());
             return null;
         }
     }
+
+    public void delete(Table table, String condition) {
+        String queryString = "delete from ?" + (condition.isEmpty() ? ";" : "where ?;");
+        try {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(queryString);
+            preparedStatement.setString(1, table.getName());
+            if (!condition.isEmpty())
+                preparedStatement.setString(2, condition);
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            //TODO handle
+            System.out.println("Couldn't delete from " + table.getName());
+        }
+
+    }
+
 }
