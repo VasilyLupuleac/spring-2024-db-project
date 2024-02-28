@@ -9,8 +9,8 @@ class Table {
         this.name = name;
     };
     public String getName() { return name; }
-    public void insert(DataEntry[] entries) {
-        db.insert(this, entries);
+    public void insert(DataEntry[] entries, String fieldOrder) {
+        db.insert(this, entries, fieldOrder);
         // TODO check data?
     }
     public DataEntry[] select(String queryString) {
