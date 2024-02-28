@@ -53,14 +53,32 @@ public class Database {
             preparedStatement.setString(2, fieldOrder);
             for (int i = 0; i < numEntries; i++)
                 preparedStatement.setString(i + 3, entries[i].toSQL());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             //TODO handle
             System.out.println("Couldn't insert into " + table.getName());
         }
     }
 
-    public DataEntry[] select(Table table, String query) {
-        return null;
+    public DataEntry[] select(Table table, String selectQuery, String condition, SQLParser parser) {
+        StringBuilder query = new StringBuilder();
+        query.append("select ? from ?");
+        if (!condition.isEmpty())
+            query.append("where ?");
+        query.append(';');
+        try {
+            PreparedStatement preparedStatement =
+                    dbConnection.prepareStatement(query.toString());
+            preparedStatement.setString(1, selectQuery);
+            preparedStatement.setString(2, table.getName());
+            if (!condition.isEmpty())
+                preparedStatement.setString(3, condition);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return parser.parseAll(resultSet);
+        } catch (SQLException e) {
+            //TODO handle
+            System.out.println("Couldn't insert into " + table.getName());
+            return null;
+        }
     }
 }

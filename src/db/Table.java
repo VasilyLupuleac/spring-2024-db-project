@@ -13,8 +13,8 @@ class Table {
         db.insert(this, entries, fieldOrder);
         // TODO check data?
     }
-    public DataEntry[] select(String queryString) {
-        return db.select(this, queryString);
+    public DataEntry[] select(String selectQuery, String condition) {
+        return db.select(this, selectQuery, condition);
         // TODO check data?
     }
     public Table join(Table other) {
