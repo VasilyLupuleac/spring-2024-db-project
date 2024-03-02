@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Database {
@@ -36,10 +37,37 @@ public class Database {
         }
         return false;
     }
+
+    public DataEntry[] transaction(SQLParser parser, SplitStatement ... statements) {
+        StringBuilder query = new StringBuilder();
+        query.append("begin transaction;\n");
+        ArrayList<String> args = new ArrayList<>();
+        for (SplitStatement st: statements) {
+            query.append(st.getQuery());
+            args.addAll(st.getArgs());
+        }
+        query.append("commit;");
+        try {
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(query.toString());
+            for (int i = 0; i < args.size(); i++)
+                preparedStatement.setString(i + 1, args.get(i));
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return parser.parseAll(resultSet);
+
+        } catch (SQLException e) {
+            //TODO handle
+            return null;
+        }
+
+
+    }
+
     public void insert(Table table, DataEntry[] entries, String fieldOrder) {
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO ");
-        query.append("?(?)");
+        query.append("?(?)\n");
         query.append(" VALUES (");
         int numEntries = entries.length;
         String[] placeholders = new String[numEntries];
@@ -62,7 +90,7 @@ public class Database {
 
     public DataEntry[] select(Table table, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
-        query.append("select ? from ?");
+        query.append("select ?\n from ?\n");
         query.append(condition.isEmpty() ? ";" : "where ?;");
         try {
             PreparedStatement preparedStatement =
@@ -81,7 +109,7 @@ public class Database {
     }
 
     public void delete(Table table, String condition) {
-        String queryString = "delete from ?" + (condition.isEmpty() ? ";" : "where ?;");
+        String queryString = "delete from ?\n" + (condition.isEmpty() ? ";" : "where ?;");
         try {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(queryString);
             preparedStatement.setString(1, table.getName());
