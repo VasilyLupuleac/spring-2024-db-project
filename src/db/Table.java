@@ -3,10 +3,12 @@ package db;
 class Table {
     private Database db;
     private String name;
+    private SQLParser parser;
 
-    public Table(Database db, String name) {
+    public Table(Database db, String name, SQLParser parser) {
         this.db = db;
         this.name = name;
+        this.parser = parser;
     }
 
     public String getName() {
@@ -18,7 +20,7 @@ class Table {
         // TODO check data?
     }
 
-    public DataEntry[] select(String selectQuery, String condition, SQLParser parser) {
+    public DataEntry[] select(String selectQuery, String condition) {
         return db.select(this, selectQuery, condition, parser);
         // TODO check data?
     }
@@ -28,9 +30,9 @@ class Table {
         //TODO ?? not sure
     }
 
-    public Table join(Table other) {
-        // TODO do we even need this? Also implement
-        return this;
+    public Table join(Table other, String on) {
+        // TODO Change parser
+        return new Table(this.db, this.name + " join " + other.name + on, parser);
     }
 
 }
