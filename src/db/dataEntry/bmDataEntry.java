@@ -28,7 +28,7 @@ public class bmDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"musicianID", "bandID", "role"};
+    protected String[] fields = new String[]{"MusicianID", "BandID", "Role"};
 
     public bmDataEntry() {
         initializeFieldMap();

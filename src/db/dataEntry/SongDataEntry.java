@@ -41,7 +41,7 @@ public class SongDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"songID", "title", "albumID", "duration", "genre", "orderNo"};
+    protected String[] fields = new String[]{"SongID", "Title", "AlbumID", "Duration", "Genre", "OrderNo"};
 
     public SongDataEntry() {
         initializeFieldMap();

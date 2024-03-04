@@ -39,7 +39,7 @@ public class MusicianDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"musicianID", "musicianName", "dateOfBirth", "gender", "Country"};
+    protected String[] fields = new String[]{"MusicianID", "MusicianName", "DateOfBirth", "Gender", "Country"};
 
     public MusicianDataEntry() {
         initializeFieldMap();

@@ -36,7 +36,7 @@ public class AlbumDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"albumID", "title", "date", "bandID", "coverURL"};
+    protected String[] fields = new String[]{"AlbumID", "Title", "ReleaseYear", "BandID", "CoverURL"};
 
     public AlbumDataEntry() {
         initializeFieldMap();

@@ -43,7 +43,7 @@ public class SongReviewDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"reviewID", "rating", "text", "author", "date", "songID"};
+    protected String[] fields = new String[]{"ReviewID", "Rating", "ReviewText", "Author", "ReviewDate", "songID"};
 
     public SongReviewDataEntry() {
         initializeFieldMap();
