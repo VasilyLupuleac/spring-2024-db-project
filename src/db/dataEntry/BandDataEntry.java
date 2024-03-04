@@ -26,7 +26,7 @@ public class BandDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"bandID", "bandName", "foundationYear", "disbandYear"};
+    protected String[] fields = new String[]{"BandID", "BandName", "FoundationDate", "DisbandDate"};
 
     public BandDataEntry(int bandID, String bandName, int foundationYear, int disbandYear) {
         initializeFieldMap();
