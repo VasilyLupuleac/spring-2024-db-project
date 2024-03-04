@@ -1,5 +1,5 @@
 package db;
 
 public interface DataEntry {
-    public String toSQL();
+    public String toSQL(String ... fields);
 }
