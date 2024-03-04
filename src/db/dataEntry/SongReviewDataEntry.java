@@ -48,7 +48,7 @@ public class SongReviewDataEntry extends DataEntry {
     public SongReviewDataEntry() {
         initializeFieldMap();
     }
-    public ResultSet parseFrom(ResultSet resultSet, String... fields) {
+    public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
             for (int i = 0; i < fields.length; i++) {
@@ -72,10 +72,10 @@ public class SongReviewDataEntry extends DataEntry {
                         songID = resultSet.getInt(i);
                 }
             }
+            return true;
         } catch (SQLException e) {
-            //TODO handle
+            return false;
         }
-        return resultSet;
     }
 
 }

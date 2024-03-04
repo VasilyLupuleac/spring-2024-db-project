@@ -15,13 +15,14 @@ public class MusicianDataEntry extends DataEntry {
     char gender;
     String country;
 
-    public MusicianDataEntry (int musicianID, String musicianName, Date dateOfBirth, char gender, String country) {
+    public MusicianDataEntry(int musicianID, String musicianName, Date dateOfBirth, char gender, String country) {
         this.musicianID = musicianID;
         this.musicianName = musicianName;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.country = country;
     }
+
     public String getField(String label) {
         switch (fieldIndexMap.get(label)) {
             case 0:
@@ -44,7 +45,8 @@ public class MusicianDataEntry extends DataEntry {
     public MusicianDataEntry() {
         initializeFieldMap();
     }
-    public ResultSet parseFrom(ResultSet resultSet, String... fields) {
+
+    public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
             for (int i = 0; i < fields.length; i++) {
@@ -66,10 +68,10 @@ public class MusicianDataEntry extends DataEntry {
                         break;
                 }
             }
+            return true;
         } catch (SQLException e) {
-            //TODO handle
+            return false;
         }
-        return resultSet;
     }
 
 }

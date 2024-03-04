@@ -65,12 +65,12 @@ public class Database {
 
     }
 
-    public void insert(Table table, DataEntry[] entries, String fieldOrder) {
+    public void insert(Table table, List<DataEntry> entries, String fieldOrder) {
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO ");
         query.append("?(?)\n");
         query.append(" VALUES (");
-        int numEntries = entries.length;
+        int numEntries = entries.size();
         String[] placeholders = new String[numEntries];
         Arrays.fill(placeholders, "? ");
         query.append(String.join(", ", placeholders));
@@ -81,7 +81,7 @@ public class Database {
             preparedStatement.setString(1, table.getName());
             preparedStatement.setString(2, fieldOrder);
             for (int i = 0; i < numEntries; i++)
-                preparedStatement.setString(i + 3, entries[i].toSQL());
+                preparedStatement.setString(i + 3, entries.get(i).toSQL());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             //TODO handle
@@ -89,7 +89,7 @@ public class Database {
         }
     }
 
-    public DataEntry[] select(Table table, String selectQuery, String condition, SQLParser parser) {
+    public List<DataEntry> select(Table table, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
         query.append("select ?\n from ?\n");
         query.append(condition.isEmpty() ? ";" : "where ?;");

@@ -7,7 +7,7 @@ import java.util.Map;
 public abstract class DataEntry {
     protected Map<String, Integer> fieldIndexMap;
     String[] fields;
-    public abstract ResultSet parseFrom(ResultSet resultSet, String... fields);
+    public abstract boolean parseFrom(ResultSet resultSet, String... fields);
     public abstract String getField(String label);
 
     protected void initializeFieldMap() {

@@ -10,7 +10,7 @@ public class bmDataEntry extends DataEntry {
     int bandID;
     String role;
 
-    public bmDataEntry (int musicianID, int bandID, String role) {
+    public bmDataEntry(int musicianID, int bandID, String role) {
         this.musicianID = musicianID;
         this.bandID = bandID;
         this.role = role;
@@ -33,7 +33,8 @@ public class bmDataEntry extends DataEntry {
     public bmDataEntry() {
         initializeFieldMap();
     }
-    public ResultSet parseFrom(ResultSet resultSet, String... fields) {
+
+    public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
             for (int i = 0; i < fields.length; i++) {
@@ -45,13 +46,13 @@ public class bmDataEntry extends DataEntry {
                         bandID = resultSet.getInt(i);
                         break;
                     case 2:
-                        role  = resultSet.getString(i);
+                        role = resultSet.getString(i);
                         break;
                 }
             }
+            return true;
         } catch (SQLException e) {
-            //TODO handle
+            return false;
         }
-        return resultSet;
     }
 }

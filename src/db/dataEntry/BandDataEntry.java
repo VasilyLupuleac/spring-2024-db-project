@@ -41,7 +41,7 @@ public class BandDataEntry extends DataEntry {
     }
 
 
-    public ResultSet parseFrom(ResultSet resultSet, String... fields) {
+    public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
             for (int i = 0; i < fields.length; i++) {
@@ -60,9 +60,9 @@ public class BandDataEntry extends DataEntry {
                         break;
                 }
             }
+            return true;
         } catch (SQLException e) {
-            //TODO handle
+            return false;
         }
-        return resultSet;
     }
 }

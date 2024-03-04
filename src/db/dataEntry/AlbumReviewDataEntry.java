@@ -16,7 +16,7 @@ public class AlbumReviewDataEntry extends DataEntry {
     String text;
     String author;
 
-    public AlbumReviewDataEntry (int reviewID, float rating, int albumID, Date date, String text, String author) {
+    public AlbumReviewDataEntry(int reviewID, float rating, int albumID, Date date, String text, String author) {
         this.reviewID = reviewID;
         this.rating = rating;
         this.albumID = albumID;
@@ -24,6 +24,7 @@ public class AlbumReviewDataEntry extends DataEntry {
         this.text = text;
         this.author = author;
     }
+
     public String getField(String label) {
         switch (fieldIndexMap.get(label)) {
             case 0:
@@ -48,7 +49,8 @@ public class AlbumReviewDataEntry extends DataEntry {
     public AlbumReviewDataEntry() {
         initializeFieldMap();
     }
-    public ResultSet parseFrom(ResultSet resultSet, String... fields) {
+
+    public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
             for (int i = 0; i < fields.length; i++) {
@@ -72,10 +74,11 @@ public class AlbumReviewDataEntry extends DataEntry {
                         author = resultSet.getString(i);
                 }
             }
+
+            return true;
         } catch (SQLException e) {
-            //TODO handle
+            return false;
         }
-        return resultSet;
     }
 
 }
