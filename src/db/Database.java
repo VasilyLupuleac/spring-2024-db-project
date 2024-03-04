@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Database {
     private Connection dbConnection = null;
+
     public Database(String name, String host, String port, String username, String password) {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + name;
         try {
@@ -20,13 +21,13 @@ public class Database {
             dbConnection = DriverManager.getConnection(url, username, password);
             System.out.println("Connected successfully");
             // TODO change
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Cannot connect to the database");
             // TODO handle
         }
 
     }
+
     public boolean close() {
         if (dbConnection != null) {
             try {
@@ -39,11 +40,12 @@ public class Database {
         return false;
     }
 
-    public List<DataEntry> transaction(SQLParser parser, SplitStatement ... statements) {
+    public List<DataEntry> transaction(SQLParser parser, SplitStatement... statements) {
+        // TODO implement split statements
         StringBuilder query = new StringBuilder();
         query.append("begin transaction;\n");
         ArrayList<String> args = new ArrayList<>();
-        for (SplitStatement st: statements) {
+        for (SplitStatement st : statements) {
             query.append(st.getQuery());
             args.addAll(st.getArgs());
         }
@@ -61,7 +63,6 @@ public class Database {
             //TODO handle
             return null;
         }
-
 
     }
 
@@ -121,7 +122,6 @@ public class Database {
             //TODO handle
             System.out.println("Couldn't delete from " + table.getName());
         }
-
     }
-
+    // TODO implement update
 }

@@ -7,8 +7,11 @@ import java.util.Map;
 public abstract class DataEntry {
     protected Map<String, Integer> fieldIndexMap;
     String[] fields;
+
     public abstract boolean parseFrom(ResultSet resultSet, String... fields);
+
     public abstract String getField(String label);
+
     public abstract DataEntry newInstance();
 
     protected void initializeFieldMap() {
