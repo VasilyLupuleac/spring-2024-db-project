@@ -3,6 +3,7 @@ package db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Database {
     private Connection dbConnection = null;
@@ -38,7 +39,7 @@ public class Database {
         return false;
     }
 
-    public DataEntry[] transaction(SQLParser parser, SplitStatement ... statements) {
+    public List<DataEntry> transaction(SQLParser parser, SplitStatement ... statements) {
         StringBuilder query = new StringBuilder();
         query.append("begin transaction;\n");
         ArrayList<String> args = new ArrayList<>();
