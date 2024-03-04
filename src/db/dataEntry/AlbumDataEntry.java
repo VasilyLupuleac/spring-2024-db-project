@@ -2,7 +2,7 @@ package db.dataEntry;
 
 import db.DataEntry;
 
-public class AlbumDataEntry implements DataEntry {
+public class AlbumDataEntry extends DataEntry {
     int albumID;
     String title;
     int date;

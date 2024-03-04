@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SongReviewDataEntry implements DataEntry {
+public class SongReviewDataEntry extends DataEntry {
     int reviewID;
     float rating;
     String text;
@@ -18,12 +18,5 @@ public class SongReviewDataEntry implements DataEntry {
         this.rating = rating;
         this.text = text;
         this.author = author;
-    }
-
-    @Override
-    public String toSQL() {
-        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-        return "(" + String.join(", ", new String[]{Integer.toString(reviewID),
-                Float.toString(rating), text, author, df.format(date)}) + ")";
     }
 }

@@ -2,7 +2,7 @@ package db.dataEntry;
 
 import db.DataEntry;
 
-public class bmDataEntry implements DataEntry {
+public class bmDataEntry extends DataEntry {
     String role;
 
     public bmDataEntry (String role) {

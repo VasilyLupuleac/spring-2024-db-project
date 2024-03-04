@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MusicianDataEntry implements DataEntry {
+public class MusicianDataEntry extends DataEntry {
     int musicianID;
     String musicianName;
     Date dateOfBirth;

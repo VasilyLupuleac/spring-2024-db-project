@@ -5,10 +5,8 @@ import db.DataEntry;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class BandDataEntry implements DataEntry {
+public class BandDataEntry extends DataEntry {
     public int bandID;
     public String bandName;
     public int foundationYear;
@@ -28,15 +26,19 @@ public class BandDataEntry implements DataEntry {
         return null;
     }
 
+    protected String[] fields = new String[]{"bandID", "bandName", "foundationYear", "disbandYear"};
+
     public BandDataEntry(int bandID, String bandName, int foundationYear, int disbandYear) {
+        initializeFieldMap();
         this.bandID = bandID;
         this.bandName = bandName;
         this.disbandYear = disbandYear;
         this.foundationYear = foundationYear;
     }
 
-    Map<String, Integer> fieldIndexMap = new HashMap<String, Integer>();
-    String[] fields = new String[]{"bandID", "bandName", "foundationYear", "disbandYear"};
+    public BandDataEntry() {
+        initializeFieldMap();
+    }
 
 
     public ResultSet parseFrom(ResultSet resultSet, String... fields) {
@@ -62,25 +64,5 @@ public class BandDataEntry implements DataEntry {
             //TODO handle
         }
         return resultSet;
-    }
-
-    public BandDataEntry() {
-        for (int i = 0; i < fields.length; i++)
-            fieldIndexMap.put(fields[i], i);
-    }
-
-    @Override
-    public String toSQL(String... fields) {
-        if (fields.length == 0)
-            fields = this.fields;
-        StringBuilder sql = new StringBuilder();
-        sql.append('(');
-        for (int i = 0; i < fields.length; i++) {
-            if (i > 0)
-                sql.append(", ");
-            sql.append(getField(fields[i]));
-        }
-        sql.append(')');
-        return sql.toString();
     }
 }
