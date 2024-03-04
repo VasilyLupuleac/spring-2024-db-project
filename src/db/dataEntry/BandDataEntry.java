@@ -12,6 +12,10 @@ public class BandDataEntry extends DataEntry {
     public int foundationYear;
     public int disbandYear;
 
+    public BandDataEntry newInstance() {
+        return new BandDataEntry();
+    }
+
     public String getField(String label) {
         switch (fieldIndexMap.get(label)) {
             case 0:

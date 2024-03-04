@@ -16,6 +16,10 @@ public class SongReviewDataEntry extends DataEntry {
     Date date;
     int songID;
 
+    public SongReviewDataEntry newInstance() {
+        return new SongReviewDataEntry();
+    }
+
     SongReviewDataEntry (int reviewID, float rating, String text, String author, Date date, int songID) {
         this.reviewID = reviewID;
         this.rating = rating;

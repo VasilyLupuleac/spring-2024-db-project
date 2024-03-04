@@ -1,5 +1,7 @@
 package db;
 
+import java.util.List;
+
 class Table {
     private Database db;
     private String name;
@@ -15,12 +17,12 @@ class Table {
         return name;
     }
 
-    public void insert(DataEntry[] entries, String fieldOrder) {
+    public void insert(List<DataEntry> entries, String fieldOrder) {
         db.insert(this, entries, fieldOrder);
         // TODO check data?
     }
 
-    public DataEntry[] select(String selectQuery, String condition) {
+    public List<DataEntry> select(String selectQuery, String condition) {
         return db.select(this, selectQuery, condition, parser);
         // TODO check data?
     }

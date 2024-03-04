@@ -9,6 +9,7 @@ public abstract class DataEntry {
     String[] fields;
     public abstract boolean parseFrom(ResultSet resultSet, String... fields);
     public abstract String getField(String label);
+    public abstract DataEntry newInstance();
 
     protected void initializeFieldMap() {
         fieldIndexMap = new HashMap<String, Integer>();

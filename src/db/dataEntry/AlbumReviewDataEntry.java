@@ -16,6 +16,11 @@ public class AlbumReviewDataEntry extends DataEntry {
     String text;
     String author;
 
+    public AlbumReviewDataEntry newInstance() {
+        return new AlbumReviewDataEntry();
+    }
+
+
     public AlbumReviewDataEntry(int reviewID, float rating, int albumID, Date date, String text, String author) {
         this.reviewID = reviewID;
         this.rating = rating;

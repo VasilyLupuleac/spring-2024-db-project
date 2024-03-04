@@ -14,6 +14,10 @@ public class SongDataEntry extends DataEntry {
     String genre;
     int orderNo;
 
+    public SongDataEntry newInstance() {
+        return new SongDataEntry();
+    }
+
     public SongDataEntry ( int songID, String title, int albumID, int duration, String genre, int orderNo) {
         this.songID = songID;
         this.title = title;

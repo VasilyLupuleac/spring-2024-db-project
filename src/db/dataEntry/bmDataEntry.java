@@ -10,6 +10,10 @@ public class bmDataEntry extends DataEntry {
     int bandID;
     String role;
 
+    public bmDataEntry newInstance() {
+        return new bmDataEntry();
+    }
+
     public bmDataEntry(int musicianID, int bandID, String role) {
         this.musicianID = musicianID;
         this.bandID = bandID;

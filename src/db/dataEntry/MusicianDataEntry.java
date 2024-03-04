@@ -15,6 +15,10 @@ public class MusicianDataEntry extends DataEntry {
     char gender;
     String country;
 
+    public MusicianDataEntry newInstance() {
+        return new MusicianDataEntry();
+    }
+
     public MusicianDataEntry(int musicianID, String musicianName, Date dateOfBirth, char gender, String country) {
         this.musicianID = musicianID;
         this.musicianName = musicianName;

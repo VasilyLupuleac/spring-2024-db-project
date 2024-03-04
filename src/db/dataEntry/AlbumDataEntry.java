@@ -12,6 +12,10 @@ public class AlbumDataEntry extends DataEntry {
     int bandID;
     String coverURL;
 
+    public AlbumDataEntry newInstance() {
+        return new AlbumDataEntry();
+    }
+
     public AlbumDataEntry (int albumID, String title, int date, int bandID, String coverURL) {
         this.albumID = albumID;
         this.title = title;
