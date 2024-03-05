@@ -28,6 +28,18 @@ public class Database {
 
     }
 
+
+    // TODO unsafe!!! only for testing
+    public ResultSet execute(String query) {
+        try {
+            Statement statement = dbConnection.createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public boolean close() {
         if (dbConnection != null) {
             try {
@@ -92,20 +104,23 @@ public class Database {
 
     public List<DataEntry> select(String tableName, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
-        query.append("select ?\n from ?\n");
-        query.append(condition.isEmpty() ? ";" : "where ?;");
+        query.append("select " + selectQuery + "\n from " + tableName);
+        if (!condition.isEmpty())
+            query.append("\nwhere " + condition);
+        query.append(";");
+        System.out.println(query);
         try {
             PreparedStatement preparedStatement =
                     dbConnection.prepareStatement(query.toString());
-            preparedStatement.setString(1, selectQuery);
-            preparedStatement.setString(2, tableName);
             if (!condition.isEmpty())
-                preparedStatement.setString(3, condition);
+                preparedStatement.setString(1, condition);
+            System.out.println(preparedStatement.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             return parser.parseAll(resultSet);
         } catch (SQLException e) {
             //TODO handle
-            System.out.println("Couldn't get the data from " + tableName);
+            System.out.println("Error while selecting from " + tableName);
+            e.printStackTrace();
             return null;
         }
     }

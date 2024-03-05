@@ -6,7 +6,7 @@ import java.util.Map;
 
 public abstract class DataEntry {
     protected Map<String, Integer> fieldIndexMap;
-    String[] fields;
+    protected String[] fields;
 
     public abstract boolean parseFrom(ResultSet resultSet, String... fields);
 

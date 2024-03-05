@@ -5,6 +5,7 @@ import db.DataEntry;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class BandDataEntry extends DataEntry {
     public int bandID;
@@ -30,9 +31,16 @@ public class BandDataEntry extends DataEntry {
         return null;
     }
 
-    protected String[] fields = new String[]{"BandID", "BandName", "FoundationDate", "DisbandDate"};
+
+    public BandDataEntry() {
+        this.fields = new String[]{"BandID", "BandName", "FoundationDate", "DisbandDate"};
+        fieldIndexMap = new HashMap<String, Integer>();
+        for (int i = 0; i < fields.length; i++)
+            fieldIndexMap.put(fields[i], i);
+    }
 
     public BandDataEntry(int bandID, String bandName, int foundationYear, int disbandYear) {
+        this.fields = new String[]{"BandID", "BandName", "FoundationDate", "DisbandDate"};
         initializeFieldMap();
         this.bandID = bandID;
         this.bandName = bandName;
@@ -40,16 +48,13 @@ public class BandDataEntry extends DataEntry {
         this.foundationYear = foundationYear;
     }
 
-    public BandDataEntry() {
-        initializeFieldMap();
-    }
 
 
     public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
-            for (int i = 0; i < fields.length; i++) {
-                switch (fieldIndexMap.get(fields[i])) {
+            for (int i = 1; i <= fields.length; i++) {
+                switch (fieldIndexMap.get(fields[i - 1])) {
                     case 0:
                         bandID = resultSet.getInt(i);
                         break;

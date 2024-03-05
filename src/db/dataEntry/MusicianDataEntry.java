@@ -53,8 +53,8 @@ public class MusicianDataEntry extends DataEntry {
     public boolean parseFrom(ResultSet resultSet, String... fields) {
         try {
             resultSet.next();
-            for (int i = 0; i < fields.length; i++) {
-                switch (fieldIndexMap.get(fields[i])) {
+            for (int i = 1; i <= fields.length; i++) {
+                switch (fieldIndexMap.get(fields[i - 1])) {
                     case 0:
                         musicianID = resultSet.getInt(i);
                         break;

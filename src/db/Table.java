@@ -2,7 +2,7 @@ package db;
 
 import java.util.List;
 
-class Table {
+public class Table {
     private Database db;
     private String name;
     private DataEntry entrySample;
