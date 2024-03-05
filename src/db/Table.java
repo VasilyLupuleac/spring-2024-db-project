@@ -18,17 +18,22 @@ class Table {
     }
 
     public void insert(List<DataEntry> entries, String ... fields) {
-        db.insert(this, entries, String.join(", ", fields));
+        db.insert(this.name, entries, String.join(", ", fields));
+        // TODO check data?
+    }
+
+    public List<DataEntry> select(String selectQuery, String condition, DataEntry sample, String ... fields) {
+        return db.select(this.name, selectQuery, condition, new DataEntryParser(sample, fields));
         // TODO check data?
     }
 
     public List<DataEntry> select(String condition, String ... fields) {
-        return db.select(this, String.join(", ", fields), condition, new DataEntryParser(entrySample, fields));
+        return db.select(this.name, String.join(", ", fields), condition, new DataEntryParser(entrySample, fields));
         // TODO check data?
     }
 
     public void delete(String condition) {
-        db.delete(this, condition);
+        db.delete(this.name, condition);
         //TODO ?? not sure
     }
 

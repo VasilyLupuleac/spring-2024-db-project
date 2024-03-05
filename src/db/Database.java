@@ -66,7 +66,7 @@ public class Database {
 
     }
 
-    public void insert(Table table, List<DataEntry> entries, String fieldOrder) {
+    public void insert(String tableName, List<DataEntry> entries, String fieldOrder) {
         StringBuilder query = new StringBuilder();
         query.append("INSERT INTO ");
         query.append("?(?)\n");
@@ -79,18 +79,18 @@ public class Database {
         try {
             PreparedStatement preparedStatement =
                     dbConnection.prepareStatement(query.toString());
-            preparedStatement.setString(1, table.getName());
+            preparedStatement.setString(1, tableName);
             preparedStatement.setString(2, fieldOrder);
             for (int i = 0; i < numEntries; i++)
                 preparedStatement.setString(i + 3, entries.get(i).toSQL());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             //TODO handle
-            System.out.println("Couldn't insert into " + table.getName());
+            System.out.println("Couldn't insert into " + tableName);
         }
     }
 
-    public List<DataEntry> select(Table table, String selectQuery, String condition, SQLParser parser) {
+    public List<DataEntry> select(String tableName, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
         query.append("select ?\n from ?\n");
         query.append(condition.isEmpty() ? ";" : "where ?;");
@@ -98,29 +98,29 @@ public class Database {
             PreparedStatement preparedStatement =
                     dbConnection.prepareStatement(query.toString());
             preparedStatement.setString(1, selectQuery);
-            preparedStatement.setString(2, table.getName());
+            preparedStatement.setString(2, tableName);
             if (!condition.isEmpty())
                 preparedStatement.setString(3, condition);
             ResultSet resultSet = preparedStatement.executeQuery();
             return parser.parseAll(resultSet);
         } catch (SQLException e) {
             //TODO handle
-            System.out.println("Couldn't get the data from " + table.getName());
+            System.out.println("Couldn't get the data from " + tableName);
             return null;
         }
     }
 
-    public void delete(Table table, String condition) {
+    public void delete(String tableName, String condition) {
         String queryString = "delete from ?\n" + (condition.isEmpty() ? ";" : "where ?;");
         try {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(queryString);
-            preparedStatement.setString(1, table.getName());
+            preparedStatement.setString(1, tableName);
             if (!condition.isEmpty())
                 preparedStatement.setString(2, condition);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             //TODO handle
-            System.out.println("Couldn't delete from " + table.getName());
+            System.out.println("Couldn't delete from " + tableName);
         }
     }
     // TODO implement update
