@@ -1,9 +1,13 @@
-package db;
+import db.*;
+import db.dataEntry.BandDataEntry;
 
 import java.io.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("Chicen toy :3 :3 :3");
         try {
             FileReader file = new FileReader("config.txt");
@@ -17,6 +21,11 @@ public class Main {
             reader.close();
             file.close();
             Database db = new Database(name, host, port, username, password);
+            Table band = new Table(db, "Band", new BandDataEntry());
+            List<DataEntry> result = band.select("", "BandName", "FoundationDate");
+            for (DataEntry entry: result)
+                System.out.println(entry.toSQL());
+
             db.close();
         }
         catch (IOException ex) {
