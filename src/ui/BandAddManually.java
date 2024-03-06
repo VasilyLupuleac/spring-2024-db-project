@@ -3,36 +3,64 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 
 public class BandAddManually extends JFrame {
-    private JTextField nameField, roleField, dobField;
+    private JTextField nameField, foundationField, disbandmentField;
     private JPanel memberPanel;
 
     //Window
     public BandAddManually() {
         setTitle("Add Band Manually");
-        setSize(600,400);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new BorderLayout());
 
-        JButton addMemberButton = new JButton("Add member   +");
-        setAddMemberButtonSize(addMemberButton, 100, 50); // Set default size
-        addMemberButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addMemberPopup();
-            }
-        });
-        panel.add(addMemberButton, BorderLayout.NORTH);
+        // Input fields for Band name, Foundation year, and Disbandment year
+        JPanel bandInfoPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5); // Adjust spacing
 
-        memberPanel = new JPanel();
-        memberPanel.setLayout(new BoxLayout(memberPanel, BoxLayout.Y_AXIS));
+        JLabel nameLabel = new JLabel("Band Name:");
+        nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(150, 25)); // Set preferred size
+        bandInfoPanel.add(nameLabel, gbc);
+        gbc.gridx = 1;
+        bandInfoPanel.add(nameField, gbc);
 
-        JScrollPane scrollPane = new JScrollPane(memberPanel);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel foundationLabel = new JLabel("Foundation Year:");
+        foundationField = new JTextField();
+        foundationField.setPreferredSize(new Dimension(150, 25)); // Set preferred size
+        bandInfoPanel.add(foundationLabel, gbc);
+        gbc.gridx = 1;
+        bandInfoPanel.add(foundationField, gbc);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel disbandmentLabel = new JLabel("Disbandment Year:");
+        disbandmentField = new JTextField();
+        disbandmentField.setPreferredSize(new Dimension(150, 25)); // Set preferred size
+        bandInfoPanel.add(disbandmentLabel, gbc);
+        gbc.gridx = 1;
+        bandInfoPanel.add(disbandmentField, gbc);
+
+        panel.add(bandInfoPanel, BorderLayout.NORTH);
+
+       // Add Member button
+       JButton addMemberButton = new JButton("Add Member   +");
+       setAddMemberButtonSize(addMemberButton, 100, 50); // Set default size
+       addMemberButton.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               addMemberPopup();
+           }
+       });
+       panel.add(addMemberButton, BorderLayout.CENTER); 
+
+       JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         //X Button
         JButton xButton = new JButton("X");
