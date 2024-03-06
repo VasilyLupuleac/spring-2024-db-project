@@ -1,8 +1,5 @@
 package db;
 
-import db.dataEntry.BandDataEntry;
-import db.dataEntry.SongDataEntry;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +13,7 @@ public class AlbumTable extends Table {
     public static String bandLabel = "BandID";
 
     public AlbumTable(Database db) {
-        super(db, "Album", new BandDataEntry());
+        super(db, "Album");
     }
 
     public void addAlbum(String title, int bandID, int releaseYear, String coverURL) throws SQLException {

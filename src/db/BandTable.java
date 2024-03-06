@@ -1,7 +1,5 @@
 package db;
 
-import db.dataEntry.BandDataEntry;
-import db.dataEntry.SongDataEntry;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +13,7 @@ public class BandTable extends Table {
     public static String disbandLabel = "DisbandDate";
 
     public BandTable(Database db) {
-        super(db, "Band", new BandDataEntry());
+        super(db, "Band");
     }
 
     public boolean addBand(String bandName, int foundationYear, int disbandYear) throws SQLException {

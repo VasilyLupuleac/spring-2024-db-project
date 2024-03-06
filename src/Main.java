@@ -1,16 +1,15 @@
 import db.*;
-import db.dataEntry.BandDataEntry;
 
 import ui.HomePage;
 
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class Main {
     private static Database db;
     public static BandTable bands;
+    public static AlbumTable albums;
 
     public static void main(String[] args) throws SQLException {
         System.out.println("Chicen toy :3 :3 :3");

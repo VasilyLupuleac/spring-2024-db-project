@@ -4,15 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.List;
 
 public class Table {
     protected Database db;
     protected String name;
-    protected DataEntry entrySample;
 
-    public Table(Database db, String name, DataEntry entrySample) {
-        this.entrySample = entrySample;
+    public Table(Database db, String name) {
         this.db = db;
         this.name = name;
     }
@@ -28,13 +25,9 @@ public class Table {
                 name, String.join(", ", fields), String.join(", ", argsArray));
     }
 
-    public ResultSet select(String selectQuery, String condition, DataEntry sample, String... fields) {
-        return db.select(this.name, selectQuery, condition, new DataEntryParser(sample, fields));
-        // TODO check data?
-    }
 
     public ResultSet select(String condition, String... fields) {
-        return db.select(this.name, String.join(", ", fields), condition, new DataEntryParser(entrySample, fields));
+        return db.select(this.name, String.join(", ", fields), condition);
         // TODO check data?
     }
 

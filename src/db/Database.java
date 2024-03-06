@@ -114,7 +114,7 @@ public class Database {
         }
     }
 
-    public ResultSet select(String tableName, String selectQuery, String condition, SQLParser parser) {
+    public ResultSet select(String tableName, String selectQuery, String condition) {
         StringBuilder query = new StringBuilder();
         query.append("select " + selectQuery + "\n from " + tableName);
         if (!condition.isEmpty())
