@@ -78,7 +78,6 @@ public class SearchResult {
         JLabel picLabel = new JLabel(new ImageIcon(cover));
         leftPanel.add(picLabel);
         leftPanel.setPreferredSize(new Dimension(100, 100)); // Adjust size according to your requirement
-        leftPanel.setBackground(Color.lightGray); // Placeholder for Album Photo
         songPanel.add(leftPanel, BorderLayout.WEST);
 
         //Right Panel for Song Details
@@ -86,21 +85,21 @@ public class SearchResult {
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         //Song Title
-        JLabel titleLabel = new JLabel(title);
+        JLabel titleLabel = new JLabel("     " + title);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         rightPanel.add(titleLabel);
 
         //Band / Album
-        JLabel bandAlbumLabel = new JLabel(band + " - " + album);
+        JLabel bandAlbumLabel = new JLabel("     " + band + " - " + album);
         bandAlbumLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         rightPanel.add(bandAlbumLabel);
 
         //Genre, Year
-        JLabel genreYearLabel = new JLabel(genre + ", " + year);
+        JLabel genreYearLabel = new JLabel("     " + genre + ", " + year);
         genreYearLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         rightPanel.add(genreYearLabel);
         //Rating, Number of ratings
-        JLabel ratingNumberLabel = new JLabel(" " + 1.0 * round(rating * 100) / 100 + "★, " + reviews + " reviews");
+        JLabel ratingNumberLabel = new JLabel("     " + 1.0 * round(rating * 100) / 100 + "★, " + reviews + " reviews");
         ratingNumberLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         rightPanel.add(ratingNumberLabel);
 

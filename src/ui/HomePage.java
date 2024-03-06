@@ -120,11 +120,11 @@ public class HomePage {
         JOptionPane.showMessageDialog(frame, "Error connecting to database", "Error", JOptionPane.ERROR_MESSAGE);
     } */
     closeHomePage();
-    new SongAdd(null);
+    new SongAdd();
 }
 
 
-    //Add BAND Windpow
+    //Add BAND Window
     private void openAddBandWindow() {
         closeHomePage(); //Close the HomePage frame
         new BandAddOptions();
@@ -148,7 +148,7 @@ public class HomePage {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new HomePage();
+                new SongAdd();
             }
         });
     }

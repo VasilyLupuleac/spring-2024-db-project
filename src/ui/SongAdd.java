@@ -1,5 +1,7 @@
 package ui;
 
+import run.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -7,12 +9,12 @@ import java.sql.*;
 
 public class SongAdd {
     private JFrame frame;
-    private JTextField titleField, bandField, albumField;
-    private Connection connection;
+    private JTextField titleField, bandField, albumField, orderField;
+
     
     //Window
-    public SongAdd(Connection connection) {
-        this.connection = connection;
+    public SongAdd() {
+
         frame = new JFrame("Add Song");
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set default close operation
@@ -50,6 +52,24 @@ public class SongAdd {
         albumField = new JTextField(20);
         panel.add(albumField, gbc);
 
+        //order number
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel orderLabel = new JLabel("Sequence number in album:");
+        panel.add(orderLabel, gbc);
+
+        gbc.gridx = 1;
+        orderField = new JTextField(20);
+        panel.add(orderField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        JLabel errorMessage = new JLabel();
+        errorMessage.setForeground(Color.red);
+        Font f2 = errorMessage.getFont();
+        errorMessage.setFont(f2.deriveFont(f2.getStyle() & ~Font.BOLD));
+        panel.add(errorMessage, gbc);
+
         //Cancel Button
         gbc.gridx = 0;
         gbc.gridy++;
@@ -58,6 +78,7 @@ public class SongAdd {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 frame.dispose(); // Close the window
                 new HomePage();
             }
@@ -68,7 +89,27 @@ public class SongAdd {
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                openNextWindow();
+                String title = titleField.getText();
+                String band = bandField.getText();
+                String album = albumField.getText();
+                String orderNoStr = orderField.getText();
+                int orderNo = 1;
+                try {
+                    orderNo = Integer.parseInt(orderNoStr);
+
+                } catch (NumberFormatException ex) {
+                    errorMessage.setText("Invalid sequence number");
+                }
+                try {
+                    ResultSet result = Main.albums.selectByName(album, Main.albums.nameLabel);
+                    result.next();
+                    int albumID = result.getInt(Main.albums.idLabel);
+                    openNextWindow(title, band, albumID, orderNo);
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         });
         buttonPanel.add(nextButton);
@@ -81,7 +122,7 @@ public class SongAdd {
 
 
     //More Info Window 
-    private void openNextWindow() {
+    private void openNextWindow(String title, String band, int albumID, int orderNo) {
         JFrame moreInfoFrame = new JFrame("More Info");
         moreInfoFrame.setSize(400, 200);
         moreInfoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Set default close operation
@@ -116,10 +157,13 @@ public class SongAdd {
             public void actionPerformed(ActionEvent e) {
                 String genre = genreField.getText();
                 String duration = durationField.getText();
-    
-                // Add genre and duration to database
-                addGenreAndDurationToDatabase(genre, duration);
-    
+                if (duration.isEmpty())
+                    duration = "0";
+                try {
+                    Main.songs.addSong(title, albumID, Integer.parseInt(duration), genre, orderNo);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 // Close the More Info window and return to HomePage
                 moreInfoFrame.dispose();
                 new HomePage();
@@ -136,36 +180,15 @@ public class SongAdd {
         // Add your code to insert genre and duration into the database here
         // Example: You can use a PreparedStatement similar to adding a song
     }
-    
-
-
-    
-    //Example from chatGPT
-    /*  private void addSongToDatabase() {
-        String title = titleField.getText();
-        String band = bandField.getText();
-        String album = albumField.getText();
-
-        if (title.isEmpty() || band.isEmpty() || album.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        try {
-            // Assume you have a table called Songs with columns Title, Band, and Album
-            String query = "INSERT INTO Songs (Title, Band, Album) VALUES (?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, band);
-            preparedStatement.setString(3, album);
-            preparedStatement.executeUpdate();
-
-            JOptionPane.showMessageDialog(frame, "Song added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            frame.dispose(); // Close the window after adding the song
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error adding song to database", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new SongAdd();
+            }
+        });
+    }
 }
+
+
+
 
