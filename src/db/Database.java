@@ -2,35 +2,25 @@ package db;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Database {
     private Connection dbConnection = null;
 
-    public Database(String name, String host, String port, String username, String password) {
+    public Database (String name, String host, String port, String username, String password) throws ClassNotFoundException, SQLException {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + name;
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Cannot find the driver");
-            return;
-            // TODO handle
-        }
-        try {
-            dbConnection = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected successfully");
-            // TODO change
-        } catch (SQLException e) {
-            System.out.println("Cannot connect to the database");
-            // TODO handle
-        }
+        Class.forName("org.postgresql.Driver");
+
+
+        dbConnection = DriverManager.getConnection(url, username, password);
+        System.out.println("Connected successfully");
+        // TODO change
+
 
     }
 
 
     // TODO unsafe!!! only for testing
-    public ResultSet executeRaw(String query) {
+    public ResultSet executeRaw (String query) {
         try {
             Statement statement = dbConnection.createStatement();
             return statement.executeQuery(query);
@@ -40,19 +30,19 @@ public class Database {
         }
     }
 
-    public PreparedStatement prepare(String query) throws SQLException {
+    public PreparedStatement prepare (String query) throws SQLException {
         return dbConnection.prepareStatement(query);
     }
 
-    public ResultSet executeSelect(PreparedStatement preparedStatement) throws SQLException {
+    public ResultSet executeSelect (PreparedStatement preparedStatement) throws SQLException {
         return preparedStatement.executeQuery();
     }
 
-    public void execute(PreparedStatement preparedStatement) throws SQLException {
+    public void execute (PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.execute();
     }
 
-    public boolean close() {
+    public boolean close () {
         if (dbConnection != null) {
             try {
                 dbConnection.close();
@@ -90,29 +80,7 @@ public class Database {
 
     }
 
-    public ResultSet select(String tableName, String selectQuery, String condition) {
-        StringBuilder query = new StringBuilder();
-        query.append("select " + selectQuery + "\n from " + tableName);
-        if (!condition.isEmpty())
-            query.append("\nwhere " + condition);
-        query.append(";");
-        System.out.println(query);
-        try {
-            PreparedStatement preparedStatement =
-                    dbConnection.prepareStatement(query.toString());
-            if (!condition.isEmpty())
-                preparedStatement.setString(1, condition);
-            System.out.println(preparedStatement.toString());
-            return preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            //TODO handle
-            System.out.println("Error while selecting from " + tableName);
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void delete(String tableName, String condition) {
+    public void delete (String tableName, String condition) {
         String queryString = "delete from ?\n" + (condition.isEmpty() ? ";" : "where ?;");
         try {
             PreparedStatement preparedStatement = dbConnection.prepareStatement(queryString);

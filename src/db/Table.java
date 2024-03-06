@@ -26,11 +26,6 @@ public class Table {
     }
 
 
-    public ResultSet select(String condition, String... fields) {
-        return db.select(this.name, String.join(", ", fields), condition);
-        // TODO check data?
-    }
-
     public void delete(String condition) {
         db.delete(this.name, condition);
         //TODO ?? not sure
