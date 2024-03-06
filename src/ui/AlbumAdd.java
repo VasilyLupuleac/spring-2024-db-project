@@ -98,6 +98,7 @@ public class AlbumAdd extends JFrame {
         JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                int year = Integer.parseInt(yearField.getText());
                 // Perform any necessary actions here, such as saving data to database
                 dispose(); // Close the window
                 new HomePage(); // Go back to home page

@@ -30,7 +30,7 @@ public class Database {
 
 
     // TODO unsafe!!! only for testing
-    public ResultSet execute(String query) {
+    public ResultSet executeRaw(String query) {
         try {
             Statement statement = dbConnection.createStatement();
             return statement.executeQuery(query);
@@ -46,6 +46,10 @@ public class Database {
 
     public ResultSet executeSelect(PreparedStatement preparedStatement) throws SQLException {
         return preparedStatement.executeQuery();
+    }
+
+    public void execute(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.execute();
     }
 
     public boolean close() {

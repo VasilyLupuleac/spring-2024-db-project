@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
+    private static Database db;
+    public static BandTable bands;
+
     public static void main(String[] args) throws SQLException {
         System.out.println("Chicen toy :3 :3 :3");
         try {
@@ -20,11 +23,18 @@ public class Main {
 
             reader.close();
             file.close();
-            Database db = new Database(name, host, port, username, password);
-            Table band = new Table(db, "Band", new BandDataEntry());
-            List<DataEntry> result = band.search("eat", "BandName");
-            for (DataEntry entry : result)
-                System.out.println(((BandDataEntry) entry).bandName);
+            db = new Database(name, host, port, username, password);
+            bands = new BandTable(db);
+            ResultSet result = bands.search("eat", bands.nameLabel);
+            while (result.next()) {
+                System.out.println(result.getString(bands.nameLabel));
+            }
+
+            bands.addBand("Yes", 1968, -1);
+            result = bands.search("Yes", bands.nameLabel);
+            while (result.next()) {
+                System.out.println(result.getInt(bands.foundationLabel));
+            }
 
             db.close();
         } catch (IOException ex) {
