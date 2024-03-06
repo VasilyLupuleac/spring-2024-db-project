@@ -3,6 +3,7 @@ package db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class Table {
@@ -20,9 +21,11 @@ public class Table {
         return name;
     }
 
-    public void insert(List<DataEntry> entries, String... fields) {
-        db.insert(this.name, entries, String.join(", ", fields));
-        // TODO check data?
+    public String insertQuery(String... fields) {
+        String argsArray[] = new String[fields.length];
+        Arrays.fill(argsArray, "?");
+        return String.format("insert into %s(%s) values (%s);",
+                name, String.join(", ", fields), String.join(", ", argsArray));
     }
 
     public ResultSet select(String selectQuery, String condition, DataEntry sample, String... fields) {
