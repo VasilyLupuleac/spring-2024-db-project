@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Table {
-    private Database db;
-    private String name;
-    private DataEntry entrySample;
+    protected Database db;
+    protected String name;
+    protected DataEntry entrySample;
 
     public Table(Database db, String name, DataEntry entrySample) {
         this.entrySample = entrySample;
