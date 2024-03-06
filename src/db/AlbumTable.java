@@ -16,7 +16,7 @@ public class AlbumTable extends Table {
         super(db, "Album");
     }
 
-    public void addAlbum(String title, int bandID, int releaseYear, String coverURL) throws SQLException {
+    public void addAlbum(String title, int releaseYear, String coverURL, int bandID) throws SQLException {
         if (coverURL.isEmpty())
             coverURL = "https://gospelmusic.io/build/images/default-album.png";
         String query = insertQuery(nameLabel, yearLabel, pictureLabel, bandLabel);

@@ -64,7 +64,7 @@ public class Database {
         return false;
     }
 
-    public List<DataEntry> transaction(SQLParser parser, SplitStatement... statements) {
+    public ResultSet transaction(SplitStatement... statements) {
         // TODO implement split statements
         StringBuilder query = new StringBuilder();
         query.append("begin transaction;\n");
@@ -80,38 +80,14 @@ public class Database {
                 preparedStatement.setString(i + 1, args.get(i));
 
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return parser.parseAll(resultSet);
+            return preparedStatement.executeQuery();
+
 
         } catch (SQLException e) {
             //TODO handle
             return null;
         }
 
-    }
-
-    public void insert(String tableName, List<DataEntry> entries, String fieldOrder) {
-        StringBuilder query = new StringBuilder();
-        query.append("INSERT INTO ");
-        query.append("?(?)\n");
-        query.append(" VALUES (");
-        int numEntries = entries.size();
-        String[] placeholders = new String[numEntries];
-        Arrays.fill(placeholders, "? ");
-        query.append(String.join(", ", placeholders));
-        query.append(");");
-        try {
-            PreparedStatement preparedStatement =
-                    dbConnection.prepareStatement(query.toString());
-            preparedStatement.setString(1, tableName);
-            preparedStatement.setString(2, fieldOrder);
-            for (int i = 0; i < numEntries; i++)
-                preparedStatement.setString(i + 3, entries.get(i).toSQL());
-            preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            //TODO handle
-            System.out.println("Couldn't insert into " + tableName);
-        }
     }
 
     public ResultSet select(String tableName, String selectQuery, String condition) {
