@@ -22,16 +22,14 @@ public class Main {
             file.close();
             Database db = new Database(name, host, port, username, password);
             Table band = new Table(db, "Band", new BandDataEntry());
-            List<DataEntry> result = band.select("", "BandName", "FoundationDate");
-            for (DataEntry entry: result)
-                System.out.println(entry.toSQL());
+            List<DataEntry> result = band.search("eat", "BandName");
+            for (DataEntry entry : result)
+                System.out.println(((BandDataEntry) entry).bandName);
 
             db.close();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
-
 
 
     }

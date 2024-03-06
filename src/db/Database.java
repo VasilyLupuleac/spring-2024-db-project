@@ -40,6 +40,15 @@ public class Database {
         }
     }
 
+    public PreparedStatement prepare(String query) throws SQLException {
+        return dbConnection.prepareStatement(query);
+    }
+
+    public List<DataEntry> executeSelect(PreparedStatement preparedStatement, SQLParser parser) throws SQLException {
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return parser.parseAll(resultSet);
+    }
+
     public boolean close() {
         if (dbConnection != null) {
             try {
