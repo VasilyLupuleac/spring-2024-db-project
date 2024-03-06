@@ -44,9 +44,8 @@ public class Database {
         return dbConnection.prepareStatement(query);
     }
 
-    public List<DataEntry> executeSelect(PreparedStatement preparedStatement, SQLParser parser) throws SQLException {
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return parser.parseAll(resultSet);
+    public ResultSet executeSelect(PreparedStatement preparedStatement) throws SQLException {
+        return preparedStatement.executeQuery();
     }
 
     public boolean close() {
@@ -111,7 +110,7 @@ public class Database {
         }
     }
 
-    public List<DataEntry> select(String tableName, String selectQuery, String condition, SQLParser parser) {
+    public ResultSet select(String tableName, String selectQuery, String condition, SQLParser parser) {
         StringBuilder query = new StringBuilder();
         query.append("select " + selectQuery + "\n from " + tableName);
         if (!condition.isEmpty())
@@ -124,8 +123,7 @@ public class Database {
             if (!condition.isEmpty())
                 preparedStatement.setString(1, condition);
             System.out.println(preparedStatement.toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return parser.parseAll(resultSet);
+            return preparedStatement.executeQuery();
         } catch (SQLException e) {
             //TODO handle
             System.out.println("Error while selecting from " + tableName);

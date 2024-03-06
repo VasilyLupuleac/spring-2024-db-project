@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,12 +25,12 @@ public class Table {
         // TODO check data?
     }
 
-    public List<DataEntry> select(String selectQuery, String condition, DataEntry sample, String... fields) {
+    public ResultSet select(String selectQuery, String condition, DataEntry sample, String... fields) {
         return db.select(this.name, selectQuery, condition, new DataEntryParser(sample, fields));
         // TODO check data?
     }
 
-    public List<DataEntry> select(String condition, String... fields) {
+    public ResultSet select(String condition, String... fields) {
         return db.select(this.name, String.join(", ", fields), condition, new DataEntryParser(entrySample, fields));
         // TODO check data?
     }
@@ -39,19 +40,25 @@ public class Table {
         //TODO ?? not sure
     }
 
-    public List<DataEntry> search(String word, String searchField) throws SQLException {
+    public ResultSet search(String word, String searchField) throws SQLException {
         String query = String.format("Select * from %s where %s like ?;", name, searchField);
         PreparedStatement statement = db.prepare(query);
         statement.setString(1, "%" + word + "%");
-        return db.executeSelect(statement, new DataEntryParser(entrySample, entrySample.fields));
+        return db.executeSelect(statement);
     }
 
-    public List<DataEntry> selectIdByName(String nameValue, String nameField, String idField) throws SQLException {
-        String query = String.format("Select %s from %s where %s = ?;", idField, name, nameField);
+    public ResultSet selectByName(String nameValue, String nameField) throws SQLException {
+        String query = String.format("Select * from %s where %s = ?;", name, nameField);
         PreparedStatement statement = db.prepare(query);
         statement.setString(1, nameValue);
-        return db.executeSelect(statement, new DataEntryParser(entrySample, idField));
+        return db.executeSelect(statement);
+    }
 
+    public ResultSet getById(int idValue, String idField) throws SQLException {
+        String query = String.format("Select * from %s where %s = ?;", name, idField);
+        PreparedStatement statement = db.prepare(query);
+        statement.setInt(1, idValue);
+        return db.executeSelect(statement);
     }
 
     public Table join(Table other, String on) {
