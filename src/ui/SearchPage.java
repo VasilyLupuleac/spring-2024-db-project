@@ -1,9 +1,13 @@
 package ui;
 
+import run.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SearchPage {
     private JFrame frame;
@@ -104,8 +108,17 @@ public class SearchPage {
 
         searchButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                openSearchResultWindow();
+            public void actionPerformed(ActionEvent e)  {
+                try {
+                    String args[] = new String[]{nameField.getText() ,albumField.getText(), bandField.getText(), genreField.getText()};
+                    for (int i = 0; i < 4; i++)
+                        if (args[i] == null)
+                            args[i] = "";
+                    ResultSet result = Main.songs.songSearch(args[0], args[1], args[2], args[3]);
+                    openSearchResultWindow(result);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -115,9 +128,9 @@ public class SearchPage {
     }
 
     // Method to open SearchResult window
-    private void openSearchResultWindow() {
+    private void openSearchResultWindow(ResultSet result) {
         // Create and display the SearchResult window
-        new SearchResult();
+        new SearchResult(result);
     }
 
     

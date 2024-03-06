@@ -125,7 +125,8 @@ public class OpenConnectionPage {
                 String username = unameField.getText();
                 String password = new String(passwordField.getPassword());
                 try {
-                    Database db = new Database(name, host, portStr, username, password);
+                    //TODO Database db = new Database(name, host, portStr, username, password);
+                    Database db = new Database("postgres", "localhost", "5433", "postgres", "123");
                     errorMessage.setText("");
                     Main.setDatabase(db);
                 } catch (ClassNotFoundException ex) {

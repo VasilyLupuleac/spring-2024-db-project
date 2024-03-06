@@ -15,9 +15,7 @@ public class Database {
         System.out.println("Connected successfully");
         // TODO change
 
-
     }
-
 
     // Unsafe! Only for testing
     public ResultSet executeRaw (String query) {
@@ -35,6 +33,7 @@ public class Database {
     }
 
     public ResultSet executeSelect (PreparedStatement preparedStatement) throws SQLException {
+        System.out.println(preparedStatement.toString());
         return preparedStatement.executeQuery();
     }
 

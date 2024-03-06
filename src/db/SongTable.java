@@ -14,11 +14,38 @@ public class SongTable extends Table {
     public String orderLabel = "OrderNo";
     private AlbumTable albumTable;
     private BandTable bandTable;
+    private PreparedStatement searchStatement;
 
     public SongTable(Database db, AlbumTable albums, BandTable bands) {
         super(db, "Song");
         this.albumTable = albums;
         this.bandTable = bands;
+        try {
+            initializeSearchStatement();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void initializeSearchStatement() throws SQLException {
+        StringBuilder query = new StringBuilder();
+        query.append("drop view if exists SearchView;\n");
+        query.append("create view SearchView as\n");
+        query.append(String.format("select %s.%s as title, %s as genre,", name, nameLabel,  genreLabel));
+        query.append(String.format("%s.%s as album, %s as year, %s as url, ", albumTable.name, albumTable.nameLabel, albumTable.yearLabel, albumTable.pictureLabel));
+        query.append(String.format("%s.%s as band, ", bandTable.name, bandTable.nameLabel));
+        query.append(String.format("(select avg(SongReview.Rating) as rating from SongReview where SongReview.SongID = %s.%s), ", name, idLabel));
+        query.append(String.format("(select count(*) as reviews from SongReview where SongReview.SongID = %s.%s)\n", name, idLabel));
+        query.append(String.format("from %s join %s ", name, albumTable.name));
+        query.append(String.format("on %s.%s = %s.%s\n", name, albumLabel, albumTable.name, albumTable.idLabel));
+        query.append(String.format("join %s ", bandTable.name));
+        query.append(String.format("on %s.%s = %s.%s\n", albumTable.name, albumTable.bandLabel, bandTable.name, bandTable.idLabel));
+        query.append(String.format("where %s.%s like ? ", name, nameLabel));
+        query.append(String.format("and %s.%s like ? ", albumTable.name, albumTable.nameLabel));
+        query.append(String.format("and %s.%s like ? ", bandTable.name, bandTable.nameLabel));
+        query.append(String.format("and %s like ?;\n", genreLabel));
+        query.append("select * from SearchView;\n");
+        searchStatement = db.prepare(query.toString());
     }
 
     public void addSong(String title, int albumID, int duration, String genre, int orderNumber) throws SQLException {
@@ -39,27 +66,10 @@ public class SongTable extends Table {
     }
 
     public ResultSet songSearch(String song, String album, String band, String genre) throws SQLException {
-        StringBuilder query = new StringBuilder();
-        query.append("begin transaction");
-        query.append("create view SearchView as\n");
-        query.append(String.format("select %s.%s as id, %s.%s as title, %s as genre,", name, nameLabel, genreLabel));
-        query.append(String.format("%s.%s as album, %s as year", albumTable.name, albumTable.nameLabel, albumTable.yearLabel));
-        query.append(String.format("%s.%s as band, ", bandTable.name, bandTable.nameLabel));
-        query.append(String.format("(select avg(SongReview.Rating) where SongReview.BandID = %s.%s) as rating\n", name, nameLabel));
-        query.append(String.format("from %s join %s ", name, albumTable.name));
-        query.append(String.format("on %s.%s = %s.%s\n", name, albumLabel, albumTable.name, albumTable.nameLabel));
-        query.append(String.format("join %s ", bandTable.name));
-        query.append(String.format("on %s.%s = %s.%s\n", albumTable.name, albumTable.bandLabel, bandTable.name, bandTable.nameLabel));
-        query.append(String.format("where %s.%s like ? ", albumTable.name, albumTable.nameLabel));
-        query.append(String.format("and %s.%s like ? ", bandTable.name, bandTable.nameLabel));
-        query.append(String.format("and %s like ?;\n", genreLabel));
-        query.append("select * from SearchView;\n");
-        query.append("commit;\n");
-        PreparedStatement statement = db.prepare(query.toString());
-        statement.setString(1, "%" + song + "%");
-        statement.setString(2, "%" + album + "%");
-        statement.setString(3, "%" + band + "%");
-        statement.setString(4, "%" + genre + "%");
-        return db.executeSelect(statement);
+        searchStatement.setString(1, "%" + song + "%");
+        searchStatement.setString(2, "%" + album + "%");
+        searchStatement.setString(3, "%" + band + "%");
+        searchStatement.setString(4, "%" + genre + "%");
+        return db.executeSelect(searchStatement);
     }
 }

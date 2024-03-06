@@ -13,10 +13,14 @@ import java.util.List;
 public class Main {
     private static Database db;
     public static BandTable bands;
+    public static AlbumTable albums;
+    public static SongTable songs;
 
     public static void setDatabase (Database newDB) {
         db = newDB;
         bands = new BandTable(db);
+        albums = new AlbumTable(db);
+        songs = new SongTable(db, albums, bands);
     }
 
     public static void close() {
