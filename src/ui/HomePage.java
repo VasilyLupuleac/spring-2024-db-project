@@ -1,5 +1,7 @@
 package ui;
 
+import run.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -51,6 +53,12 @@ public class HomePage {
         frame.add(panel);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null); // Center the frame on the screen
+
+        frame.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                Main.close();
+            }
+        });
     }
 
 
