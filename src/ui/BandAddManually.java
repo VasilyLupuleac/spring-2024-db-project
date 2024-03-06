@@ -1,8 +1,11 @@
 package ui;
 
+import run.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 
 public class BandAddManually extends JFrame {
     private JTextField nameField, foundationField, disbandmentField;
@@ -77,7 +80,18 @@ public class BandAddManually extends JFrame {
         JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //saveBandInformation();
+                String name = nameField.getText();
+                String foundation = foundationField.getText();
+                if (foundation.isEmpty())
+                    foundation = "0";
+                String disband = disbandmentField.getText();
+                if (disband.isEmpty())
+                    disband = "0";
+                try {
+                    Main.bands.addBand(name, Integer.parseInt(foundation), Integer.parseInt(disband));
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 dispose();
                 // Go to HomePage
                 new HomePage();

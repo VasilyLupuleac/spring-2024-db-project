@@ -12,11 +12,12 @@ public class BandTable extends Table {
     public static String foundationLabel = "FoundationDate";
     public static String disbandLabel = "DisbandDate";
 
-    public BandTable(Database db) {
-        super(db, "Band");
+    public BandTable (Database db) {
+        super(db, "band");
     }
 
-    public boolean addBand(String bandName, int foundationYear, int disbandYear) throws SQLException {
+    public boolean addBand (String bandName, int foundationYear, int disbandYear) throws SQLException {
+
         if (disbandYear != 0 && disbandYear < foundationYear)
             return false;
         String query = insertQuery(nameLabel, foundationLabel, disbandLabel);

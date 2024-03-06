@@ -38,6 +38,7 @@ public class Database {
     }
 
     public void execute (PreparedStatement preparedStatement) throws SQLException {
+        System.out.println(preparedStatement.toString());
         preparedStatement.execute();
     }
 

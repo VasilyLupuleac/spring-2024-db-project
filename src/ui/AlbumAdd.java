@@ -1,13 +1,18 @@
 // AlbumAdd.java
 package ui;
 
+import run.Main;
+
+import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AlbumAdd extends JFrame {
-    private JTextField nameField, yearField;
+    private JTextField nameField, yearField, urlField, bandField;
     private JLabel pictureLabel;
 
     public AlbumAdd() {
@@ -27,30 +32,10 @@ public class AlbumAdd extends JFrame {
         pictureLabel = new JLabel("Upload Album Picture:");
         panel.add(pictureLabel, gbc);
 
-        JButton uploadButton = new JButton("Upload");
-        uploadButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                uploadPicture();
-            }
-
-            private void uploadPicture() {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        JFileChooser fileChooser = new JFileChooser();
-                        int returnValue = fileChooser.showOpenDialog(AlbumAdd.this);
-                        if (returnValue == JFileChooser.APPROVE_OPTION) {
-                            File selectedFile = fileChooser.getSelectedFile();
-                    
-                            pictureLabel.setText("Uploaded: " + selectedFile.getName());
-                        }
-                    }
-                });
-            }
-            
-        });
         gbc.gridx = 1;
-        panel.add(uploadButton, gbc);
-
+        gbc.anchor = GridBagConstraints.LINE_START; // Reset the anchor for the text field
+        urlField = new JTextField(10);
+        panel.add(urlField, gbc);
 
         // Name
         gbc.gridx = 0;
@@ -63,6 +48,18 @@ public class AlbumAdd extends JFrame {
         gbc.anchor = GridBagConstraints.LINE_START; // Reset the anchor for the text field
         nameField = new JTextField(10);
         panel.add(nameField, gbc);
+
+        //Band
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.anchor = GridBagConstraints.LINE_END; // Align the label to the end of its display area
+        JLabel bandLabel = new JLabel("Band:");
+        panel.add(bandLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START; // Reset the anchor for the text field
+        bandField = new JTextField(10);
+        panel.add(bandField, gbc);
 
         // Year
         gbc.gridx = 0;
@@ -98,7 +95,27 @@ public class AlbumAdd extends JFrame {
         JButton okButton = new JButton("Ok");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int year = Integer.parseInt(yearField.getText());
+                int year;
+                try {
+                    year = Integer.parseInt(yearField.getText());
+                } catch (NumberFormatException ex) {
+                    year = 0;
+                }
+                String name = nameField.getText();
+                String band = bandField.getText();
+                String url = urlField.getText();
+
+                try {
+                    ResultSet result = Main.bands.selectByName(band, Main.bands.nameLabel);
+                    result.next();
+                    int bandID = result.getInt(Main.bands.idLabel);
+                    Main.albums.addAlbum(name, year, url, bandID);
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
+
                 // Perform any necessary actions here, such as saving data to database
                 dispose(); // Close the window
                 new HomePage(); // Go back to home page
