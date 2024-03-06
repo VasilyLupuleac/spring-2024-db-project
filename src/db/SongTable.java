@@ -29,8 +29,8 @@ public class SongTable extends Table {
 
     public void initializeSearchStatement() throws SQLException {
         StringBuilder query = new StringBuilder();
-        query.append("drop view if exists SearchView;\n");
-        query.append("create view SearchView as\n");
+        //query.append("drop view if exists SearchView;\n");
+        //query.append("create view SearchView as\n");
         query.append(String.format("select %s.%s as title, %s as genre,", name, nameLabel,  genreLabel));
         query.append(String.format("%s.%s as album, %s as year, %s as url, ", albumTable.name, albumTable.nameLabel, albumTable.yearLabel, albumTable.pictureLabel));
         query.append(String.format("%s.%s as band, ", bandTable.name, bandTable.nameLabel));
@@ -44,7 +44,7 @@ public class SongTable extends Table {
         query.append(String.format("and %s.%s like ? ", albumTable.name, albumTable.nameLabel));
         query.append(String.format("and %s.%s like ? ", bandTable.name, bandTable.nameLabel));
         query.append(String.format("and %s like ?;\n", genreLabel));
-        query.append("select * from SearchView;\n");
+        //query.append("select * from SearchView;\n");
         searchStatement = db.prepare(query.toString());
     }
 
