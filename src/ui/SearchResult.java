@@ -1,9 +1,12 @@
 package ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -36,7 +39,8 @@ public class SearchResult {
                 float rating = result.getFloat("rating");
                 int reviews = result.getInt("reviews");
                 String genre = result.getString("Genre");
-                mainPanel.add(createSongPanel(title, album, band, rating, reviews, genre, year));
+                String url = result.getString("url");
+                mainPanel.add(createSongPanel(title, album, band, rating, reviews, genre, year, url));
                 mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));   //spacing between panels
             }
         } catch (SQLException ex) {
@@ -47,16 +51,32 @@ public class SearchResult {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-
+    static BufferedImage getCover(String urlString) {
+        BufferedImage raw = null;
+        try {
+            URL url = new URL(urlString);
+            raw = ImageIO.read(url);}
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        Image scaled = raw.getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        BufferedImage result = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        result.getGraphics().drawImage(scaled, 0, 0, null);
+        return result;
+    }
     //Panel for each song
     private JPanel createSongPanel(String title, String album, String band,
                                    float rating,
                                    int reviews,
-                                   String genre, int year) {
+                                   String genre, int year, String urlString) {
         JPanel songPanel = new JPanel(new BorderLayout());
 
         //Left Panel for Photo
         JPanel leftPanel = new JPanel();
+        BufferedImage cover = getCover(urlString);
+        JLabel picLabel = new JLabel(new ImageIcon(cover));
+        leftPanel.add(picLabel);
         leftPanel.setPreferredSize(new Dimension(100, 100)); // Adjust size according to your requirement
         leftPanel.setBackground(Color.lightGray); // Placeholder for Album Photo
         songPanel.add(leftPanel, BorderLayout.WEST);
