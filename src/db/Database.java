@@ -19,7 +19,7 @@ public class Database {
     }
 
 
-    // TODO unsafe!!! only for testing
+    // Unsafe! Only for testing
     public ResultSet executeRaw (String query) {
         try {
             Statement statement = dbConnection.createStatement();
