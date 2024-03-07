@@ -30,7 +30,6 @@ public class Main {
     public static void main (String[] args) throws SQLException {
         System.out.println("Chicen toy :3 :3 :3");
         OpenConnectionPage startPage = new OpenConnectionPage();
-        startPage.main(args);
         /*ResultSet result = bands.search("eat", bands.nameLabel);
         while (result.next()) {
             System.out.println(result.getString(bands.nameLabel));

@@ -17,7 +17,7 @@ public class SearchResult {
     private JPanel mainPanel;
 
     // Window
-    public SearchResult(ResultSet result) {
+    public SearchResult(ResultSet result, String[] args) {
         frame = new JFrame("Search Results");
         frame.setSize(700, 500);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,9 +29,10 @@ public class SearchResult {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         frame.getContentPane().add(scrollPane);
-
         try {
             while (result.next()) {
+                int albumID = result.getInt("albumID");
+                int songID = result.getInt("songID");
                 String title = result.getString("title");
                 String album = result.getString("album");
                 String band = result.getString("band");
@@ -40,7 +41,7 @@ public class SearchResult {
                 int reviews = result.getInt("reviews");
                 String genre = result.getString("Genre");
                 String url = result.getString("url");
-                mainPanel.add(createSongPanel(title, album, band, rating, reviews, genre, year, url));
+                mainPanel.add(createSongPanel(title, album, band, rating, reviews, genre, year, url, songID, albumID, args));
                 mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));   //spacing between panels
             }
         } catch (SQLException ex) {
@@ -51,30 +52,36 @@ public class SearchResult {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-    static BufferedImage getCover(String urlString) {
+
+    private void closeSearchResultPage() {
+        frame.dispose();
+    }
+
+    static BufferedImage getCover(String urlString, int width, int height) {
         BufferedImage raw = null;
         try {
             URL url = new URL(urlString);
-            raw = ImageIO.read(url);}
-        catch (Exception ex) {
+            raw = ImageIO.read(url);
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
-        Image scaled = raw.getScaledInstance(100, 100, Image.SCALE_DEFAULT);
-        BufferedImage result = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Image scaled = raw.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         result.getGraphics().drawImage(scaled, 0, 0, null);
         return result;
     }
+
     //Panel for each song
     private JPanel createSongPanel(String title, String album, String band,
-                                   float rating,
-                                   int reviews,
-                                   String genre, int year, String urlString) {
+                                   float rating, int reviews, String genre,
+                                   int year, String urlString, int songID,
+                                   int albumID, String[] args) {
         JPanel songPanel = new JPanel(new BorderLayout());
 
         //Left Panel for Photo
         JPanel leftPanel = new JPanel();
-        BufferedImage cover = getCover(urlString);
+        BufferedImage cover = getCover(urlString, 100, 100);
         JLabel picLabel = new JLabel(new ImageIcon(cover));
         leftPanel.add(picLabel);
         leftPanel.setPreferredSize(new Dimension(100, 100)); // Adjust size according to your requirement
@@ -111,7 +118,7 @@ public class SearchResult {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                openEditInfoWindow();
+                openEditInfoWindow(title, album, band, rating, reviews, genre, year, urlString, songID, albumID, args);
             }
         });
         editButtonPanel.add(editButton);
@@ -122,8 +129,12 @@ public class SearchResult {
 
 
     // Open EditInfo Window
-    private void openEditInfoWindow() {
-        new EditInfo();
+    private void openEditInfoWindow(String title, String album, String band,
+                                    float rating, int reviews, String genre,
+                                    int year, String urlString, int songID,
+                                    int albumID, String[] args) {
+        closeSearchResultPage();
+        new EditInfo(title, album, band, rating, reviews, genre, year, urlString, songID, albumID, args);
     }
 
 

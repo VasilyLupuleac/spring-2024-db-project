@@ -25,10 +25,19 @@ public class Table {
                 name, String.join(", ", fields), String.join(", ", argsArray));
     }
 
+    public void setById (int id, String idLabel, String value, String fieldLabel) throws SQLException {
+        String query = String.format("update %s set %s = ? where %s = ?;", name, fieldLabel, idLabel);
+        PreparedStatement statement = db.prepare(query);
+        statement.setString(1, value);
+        statement.setInt(2, id);
+        db.execute(statement);
+    }
 
-    public void delete(String condition) {
-        db.delete(this.name, condition);
-        //TODO ?? not sure
+    public void deleteById(int id, String idLabel) throws SQLException {
+        String query = String.format("delete from %s where %s = ?;", name, idLabel);
+        PreparedStatement statement = db.prepare(query);
+        statement.setInt(1, id);
+        db.execute(statement);
     }
 
     public ResultSet search(String word, String searchField) throws SQLException {

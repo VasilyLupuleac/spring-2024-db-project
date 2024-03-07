@@ -119,7 +119,7 @@ public class HomePage {
     //Add BAND Window
     private void openAddBandWindow() {
         closeHomePage(); //Close the HomePage frame
-        new BandAddOptions();
+        new BandAddManually();
     } 
 
 

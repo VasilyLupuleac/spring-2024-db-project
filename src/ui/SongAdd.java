@@ -95,6 +95,7 @@ public class SongAdd {
                 String orderNoStr = orderField.getText();
                 int orderNo = 1;
                 try {
+                    errorMessage.setText("");
                     orderNo = Integer.parseInt(orderNoStr);
 
                 } catch (NumberFormatException ex) {

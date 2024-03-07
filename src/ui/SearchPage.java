@@ -72,21 +72,11 @@ public class SearchPage {
         gbc.gridwidth = 2; // Span two columns
         gbc.anchor = GridBagConstraints.LINE_END; // Align to the right
         gbc.insets = new Insets(20, 10, 10, 10); // Adjust top padding
-        JButton sortButton = new JButton("Sort ↑↓");
-        sortButton.setPreferredSize(new Dimension(80, 30)); // Adjust size
-        panel.add(sortButton, gbc);
+        String[] options = {"Highest rating ↑↓", "Most reviews ↑↓"};
+        JComboBox<String> sortOptions = new JComboBox<>(options);
 
-        sortButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Show sorting options dialog
-                String[] options = {"Highest rating", "Most reviews", "None"};
-                JComboBox<String> sortOptions = new JComboBox<>(options);
-
-                int choice = JOptionPane.showOptionDialog(frame, sortOptions, "Sort Options",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-            }
-        });
+        sortOptions.setPreferredSize(new Dimension(120, 30)); // Adjust size
+        panel.add(sortOptions, gbc);
 
         // Search Button
         gbc.gridx = 1;
@@ -105,8 +95,12 @@ public class SearchPage {
                     for (int i = 0; i < 4; i++)
                         if (args[i] == null)
                             args[i] = "";
-                    ResultSet result = Main.songs.songSearch(args[0], args[1], args[2], args[3]);
-                    openSearchResultWindow(result);
+                    ResultSet result;
+                    if (sortOptions.getSelectedIndex() == 0)
+                        result = Main.songs.songSearchTopRated(args[0], args[1], args[2], args[3]);
+                    else
+                        result = Main.songs.songSearchMostReviewed(args[0], args[1], args[2], args[3]);
+                    openSearchResultWindow(result, args);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -119,9 +113,10 @@ public class SearchPage {
     }
 
     // Method to open SearchResult window
-    private void openSearchResultWindow(ResultSet result) {
+    private void openSearchResultWindow(ResultSet result, String[] args) {
         // Create and display the SearchResult window
-        new SearchResult(result);
+        frame.dispose();
+        new SearchResult(result, args);
     }
 
     

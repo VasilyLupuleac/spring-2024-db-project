@@ -56,6 +56,7 @@ public class BandAddManually extends JFrame {
        // Add Member button
        JButton addMemberButton = new JButton("Add Member   +");
        setAddMemberButtonSize(addMemberButton, 100, 50); // Set default size
+       addMemberButton.setMaximumSize(new Dimension(100, 50));
        addMemberButton.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
                addMemberPopup();

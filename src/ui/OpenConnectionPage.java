@@ -126,7 +126,7 @@ public class OpenConnectionPage {
                 String password = new String(passwordField.getPassword());
                 try {
                     //TODO Database db = new Database(name, host, portStr, username, password);
-                    Database db = new Database("Music", "localhost", "5432", "postgres", "nghtwsh12");
+                    Database db = new Database("postgres", "localhost", "5433", "postgres", "123");
                     errorMessage.setText("");
                     Main.setDatabase(db);
                 } catch (ClassNotFoundException ex) {
@@ -136,6 +136,7 @@ public class OpenConnectionPage {
                     errorMessage.setText("Cannot connect to the database");
                     return;
                 }
+                frame.dispose();
                 OpenHomePageWindow();
 
             }
