@@ -64,15 +64,6 @@ public class SearchPage {
         genreField.setPreferredSize(new Dimension(125, 25)); // Customize size
         panel.add(genreField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        JLabel musicianLabel = new JLabel("Musician:");
-        panel.add(musicianLabel, gbc);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        JTextField musicianField = new JTextField();
-        musicianField.setPreferredSize(new Dimension(125, 25)); // Customize size
-        panel.add(musicianField, gbc);
 
 
         // Sort Button

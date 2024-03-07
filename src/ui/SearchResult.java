@@ -126,11 +126,6 @@ public class SearchResult {
         new EditInfo();
     }
 
-    // Open LeaveReview Window
-    private void openLeaveReviewWindow() {
-        new LeaveReview();
-    }
-
 
     // MAIN
     public static void main(String[] args) {

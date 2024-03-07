@@ -111,14 +111,6 @@ public class HomePage {
 
     //Add SONG Window
     private void openAddSongWindow() {
-    /*try {
-        // Establish connection to your SQL database here
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database_name", "username", "password");
-        new SongAdd(connection);
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(frame, "Error connecting to database", "Error", JOptionPane.ERROR_MESSAGE);
-    } */
     closeHomePage();
     new SongAdd();
 }

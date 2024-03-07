@@ -175,11 +175,7 @@ public class SongAdd {
         moreInfoFrame.setVisible(true);
         moreInfoFrame.setLocationRelativeTo(frame);
     }
-    
-    private void addGenreAndDurationToDatabase(String genre, String duration) {
-        // Add your code to insert genre and duration into the database here
-        // Example: You can use a PreparedStatement similar to adding a song
-    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
