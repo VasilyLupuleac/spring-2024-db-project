@@ -46,8 +46,8 @@ public class SongTable extends Table {
         query.append(String.format("and %s.%s like ? ", bandTable.name, bandTable.nameLabel));
         query.append(String.format("and %s like ?\n", genreLabel));
         //query.append("select * from SearchView;\n");
-        searchStatementTopRated = db.prepare(query.toString() + "order by rating;");
-        searchStatementMostReviewed = db.prepare(query.toString() + "order by reviews;");
+        searchStatementTopRated = db.prepare(query.toString() + "order by rating desc;");
+        searchStatementMostReviewed = db.prepare(query.toString() + "order by reviews desc;"); // Descending due to results representation
     }
 
     public void addSong(String title, int albumID, int duration, String genre, int orderNumber) throws SQLException {
