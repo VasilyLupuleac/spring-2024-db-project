@@ -62,7 +62,7 @@ public class BandAddManually extends JFrame {
                addMemberPopup();
            }
        });
-       panel.add(addMemberButton, BorderLayout.CENTER); 
+       //panel.add(addMemberButton, BorderLayout.CENTER);
 
        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 

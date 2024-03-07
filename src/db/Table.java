@@ -61,9 +61,4 @@ public class Table {
         return db.executeSelect(statement);
     }
 
-    public Table join(Table other, String on) {
-        // TODO Implement?
-        return null;
-    }
-
 }

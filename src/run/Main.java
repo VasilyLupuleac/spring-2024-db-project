@@ -28,19 +28,6 @@ public class Main {
     }
 
     public static void main (String[] args) throws SQLException {
-        System.out.println("Chicen toy :3 :3 :3");
         OpenConnectionPage startPage = new OpenConnectionPage();
-        /*ResultSet result = bands.search("eat", bands.nameLabel);
-        while (result.next()) {
-            System.out.println(result.getString(bands.nameLabel));
-        }
-
-        // bands.addBand("Yes", 1968, -1);
-        result = bands.search("Yes", bands.nameLabel);
-        while (result.next()) {
-            System.out.println(result.getInt(bands.foundationLabel));
-        }*/
-
-
     }
 }

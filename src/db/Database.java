@@ -10,10 +10,7 @@ public class Database {
         String url = "jdbc:postgresql://" + host + ":" + port + "/" + name;
         Class.forName("org.postgresql.Driver");
 
-
         dbConnection = DriverManager.getConnection(url, username, password);
-        System.out.println("Connected successfully");
-        // TODO change
 
     }
 
@@ -33,12 +30,10 @@ public class Database {
     }
 
     public ResultSet executeSelect (PreparedStatement preparedStatement) throws SQLException {
-        System.out.println(preparedStatement.toString());
         return preparedStatement.executeQuery();
     }
 
     public void execute (PreparedStatement preparedStatement) throws SQLException {
-        System.out.println(preparedStatement.toString());
         preparedStatement.execute();
     }
 
@@ -55,7 +50,6 @@ public class Database {
     }
 
     public ResultSet transaction(SplitStatement... statements) {
-        // TODO implement split statements
         StringBuilder query = new StringBuilder();
         query.append("begin transaction;\n");
         ArrayList<String> args = new ArrayList<>();
@@ -74,24 +68,8 @@ public class Database {
 
 
         } catch (SQLException e) {
-            //TODO handle
             return null;
         }
 
     }
-
-    public void delete (String tableName, String condition) {
-        String queryString = "delete from ?\n" + (condition.isEmpty() ? ";" : "where ?;");
-        try {
-            PreparedStatement preparedStatement = dbConnection.prepareStatement(queryString);
-            preparedStatement.setString(1, tableName);
-            if (!condition.isEmpty())
-                preparedStatement.setString(2, condition);
-            preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            //TODO handle
-            System.out.println("Couldn't delete from " + tableName);
-        }
-    }
-    // TODO implement update
 }
